@@ -1,8 +1,8 @@
 import tkinter as tk
 from typing import Optional
 
-from ai.agent import ReversiAI
-from logic.board import (
+from reversi_project.ai.agent import ReversiAI
+from reversi_project.logic.board import (
     BLACK,
     BOARD_SIZE,
     WHITE,
@@ -10,10 +10,34 @@ from logic.board import (
     create_initial_board,
     move_to_notation,
 )
-from logic.engine import ReversiEngine
-from models.game_state import GameState
-from models.move import Move
+from reversi_project.logic.engine import ReversiEngine
+from reversi_project.models.game_state import GameState
+from reversi_project.models.move import Move
 
+"""
+PLIK: app.py
+OPIS: Interfejs graficzny gry Reversi.
+-------------------------------------------------------------
+ZASTOSOWANIE:
+Ten plik odpowiada za warstwę wizualną aplikacji.
+
+GUI umożliwia rozegranie partii człowiek vs AI, wybór poziomu trudności,
+wyświetlanie planszy 8x8, podświetlanie legalnych ruchów, obsługę podpowiedzi,
+liczenie pionków oraz prezentowanie historii i analizy AI.
+
+Logika zasad gry i decyzje AI nie są implementowane bezpośrednio w tym pliku.
+GUI korzysta z klas ReversiEngine oraz ReversiAI, dzięki czemu interfejs jest
+oddzielony od właściwej logiki gry i algorytmu sztucznej inteligencji.
+
+MECHANIZMY:
+1. Budowanie głównego okna aplikacji
+2. Rysowanie planszy i pionków na Canvasie
+3. Obsługa kliknięć użytkownika
+4. Wywoływanie ruchu AI
+5. Obsługa podpowiedzi dla gracza
+6. Wyświetlanie statusu gry i liczników pionków
+7. Obsługa paneli informacyjnych w sidebarze
+"""
 
 class ReversiApp:
     DEPTH_OPTIONS = {

@@ -1,11 +1,32 @@
 import tkinter as tk
 from typing import Optional
 
-from ai.agent import NimAI
-from logic.engine import NimEngine
-from models.game_state import GameState
-from models.move import Move
+from nim_project.ai.agent import NimAI
+from nim_project.logic.engine import NimEngine
+from nim_project.models.game_state import GameState
+from nim_project.models.move import Move
 
+"""
+PLIK: app.py
+OPIS: Interfejs graficzny gry Nim.
+-------------------------------------------------------------
+ZASTOSOWANIE:
+Ten plik odpowiada za warstwę wizualną aplikacji.
+
+GUI umożliwia rozpoczęcie gry, wybór ruchu przez kliknięcie patyczków,
+wyświetlanie aktualnego stanu stert, historii ruchów oraz wyjaśnień AI.
+
+Logika zasad gry i decyzje AI nie są implementowane bezpośrednio w tym pliku.
+GUI korzysta z klas NimEngine oraz NimAI, dzięki czemu interfejs jest oddzielony
+od właściwej logiki gry.
+
+MECHANIZMY:
+1. Budowanie ekranu startowego
+2. Rysowanie stert i obsługa kliknięć użytkownika
+3. Wywoływanie ruchu AI
+4. Wyświetlanie statusu gry
+5. Obsługa paneli informacyjnych w sidebarze
+"""
 
 class NimApp:
     def __init__(self):
