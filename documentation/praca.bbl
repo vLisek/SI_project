@@ -1,0 +1,85 @@
+\begin{thebibliography}{10}
+
+\bibitem{algomonster_nim}
+{AlgoMonster}.
+\newblock Nim game - analysis and solutions.
+\newblock \url{https://algo.monster/liteproblems/292}.
+\newblock Dostęp: 16.05.2026.
+
+\bibitem{archimedes_nim_strategy}
+{Archimedes Laboratory}.
+\newblock Most wanted solutions: Nim game strategy.
+\newblock \url{https://www.archimedes-lab.org/How_to_Solve/Win_at_Nim.html}.
+\newblock Dostęp: 16.05.2026.
+
+\bibitem{archimedes_nim_online}
+{Archimedes Laboratory}.
+\newblock Play nim game online.
+\newblock \url{https://www.archimedes-lab.org/game_nim/play_nim_game.html}.
+\newblock Dostęp: 16.05.2026.
+
+\bibitem{gfg_game_nim}
+{GeeksforGeeks}.
+\newblock Combinatorial game theory | set 2 (game of nim).
+\newblock
+  \url{https://www.geeksforgeeks.org/dsa/combinatorial-game-theory-set-2-game-nim/}.
+\newblock Dostęp: 16.05.2026.
+
+\bibitem{gfg_cgt_intro}
+{GeeksforGeeks}.
+\newblock Introduction to combinatorial game theory.
+\newblock
+  \url{https://www.geeksforgeeks.org/dsa/introduction-to-combinatorial-game-theory/}.
+\newblock Dostęp: 16.05.2026.
+
+\bibitem{github_nim_project}
+Marc Jethro.
+\newblock Nim-game: Implementation in python with gui and ai.
+\newblock \url{https://github.com/marcjethro/Nim-Game}.
+\newblock Dostęp: 16.05.2026.
+
+\bibitem{chatgpt_gui_support}
+{OpenAI}.
+\newblock Chatgpt -- generative artificial intelligence assistant for gui
+  development and refactoring.
+\newblock \url{https://chatgpt.com}.
+\newblock Wsparcie w projektowaniu układu i refaktoryzacji kodu GUI (PySide6);
+  Dostęp: 16.05.2026.
+
+\bibitem{transum_multi_pile}
+{Transum Software}.
+\newblock Nim mathematical game of strategy (multi-pile version).
+\newblock \url{https://www.transum.org/Software/Nim/}.
+\newblock Dostęp: 16.05.2026.
+
+\bibitem{transum_subtraction}
+{Transum Software}.
+\newblock The subtraction game (basic nim version).
+\newblock \url{https://www.transum.org/Software/Nim/Subtraction.asp}.
+\newblock Dostęp: 16.05.2026.
+
+\bibitem{wiki_impartial_game}
+{Wikipedia}.
+\newblock Impartial game -- the free encyclopedia.
+\newblock \url{https://en.wikipedia.org/wiki/Impartial_game}.
+\newblock Dostęp: 16.05.2026.
+
+\bibitem{wiki_misere}
+{Wikipedia}.
+\newblock Misère -- the free encyclopedia.
+\newblock \url{https://en.wikipedia.org/wiki/Mis%C3%A8re}.
+\newblock Dostęp: 16.05.2026.
+
+\bibitem{wiki_nim_en}
+{Wikipedia}.
+\newblock Nim -- the free encyclopedia.
+\newblock \url{https://en.wikipedia.org/wiki/Nim}.
+\newblock Dostęp: 16.05.2026.
+
+\bibitem{wiki_nim_pl}
+{Wikipedia}.
+\newblock Nim -- wolna encyklopedia.
+\newblock \url{https://pl.wikipedia.org/wiki/Nim}.
+\newblock Dostęp: 16.05.2026.
+
+\end{thebibliography}

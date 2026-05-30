@@ -1,0 +1,60 @@
+\chapter{Instrukcja uruchomienia projektu}
+
+Projekt składa się z dwóch niezależnych gier: Nim oraz Reversi. Obie gry zostały napisane w języku Python i korzystają z biblioteki \texttt{tkinter} do obsługi interfejsu graficznego.
+
+\section{Wymagania środowiskowe}
+
+Do uruchomienia projektu wymagane jest środowisko Python w wersji 3.12 lub nowszej. Interfejs graficzny wykorzystuje bibliotekę \texttt{tkinter}, która jest częścią standardowej dystrybucji Pythona.
+
+Wymagania:
+\begin{itemize}
+\item Python 3.12 lub nowszy,
+\item terminal lub środowisko IDE, np. PyCharm.
+\end{itemize}
+
+\section{Struktura projektu}
+
+Projekt został podzielony na dwa główne moduły: \texttt{nim\_project} oraz \texttt{reversi\_project}. Każdy z nich posiada podobną strukturę katalogów, co ułatwia analizę kodu i pokazuje spójny sposób organizacji projektu.
+
+\begin{lstlisting}[caption={Uproszczona struktura projektu.}, label={lst:project-structure}]
+SI_project/
+|-- nim_project/
+|   |-- main.py
+|   |-- ai/
+|   |-- gui/
+|   |-- logic/
+|   |-- models/
+|
+|-- reversi_project/
+|   |-- main.py
+|   |-- ai/
+|   |-- gui/
+|   |-- logic/
+|   |-- models/
+|
+|-- .gitignore
+\end{lstlisting}
+
+Katalog \texttt{ai} zawiera logikę agentów decyzyjnych. Katalog \texttt{logic} odpowiada za zasady gry, poprawność ruchów i aktualizację stanu rozgrywki. W katalogu \texttt{models} znajdują się proste klasy danych, natomiast \texttt{gui} zawiera implementację interfejsu graficznego.
+
+\newpage
+
+\section{Uruchomienie gry Nim}
+
+Aby uruchomić grę Nim, należy przejść w terminalu do głównego katalogu projektu \texttt{SI\_project}. Następnie należy wykonać polecenie:
+
+\begin{center}
+\texttt{python -m nim\_project.main}
+\end{center}
+
+Po uruchomieniu programu pojawia się ekran wyboru początkowego układu stert oraz trybu gry. Użytkownik może wybrać tryb Człowiek vs AI albo AI vs AI. W trybie Człowiek vs AI gracz sam wybiera żetony do zabrania, natomiast w trybie AI vs AI rozgrywka przebiega automatycznie.
+
+\section{Uruchomienie gry Reversi}
+
+Aby uruchomić grę Reversi, również należy znajdować się w katalogu głównym projektu \texttt{SI\_project}. Następnie należy wykonać polecenie:
+
+\begin{center}
+\texttt{python -m reversi\_project.main}
+\end{center}
+
+Po uruchomieniu aplikacji wyświetlana jest plansza Reversi oraz panel boczny. Użytkownik może wybrać tryb Człowiek vs AI albo AI vs AI. W trybie Człowiek vs AI dostępny jest wybór poziomu trudności oraz podpowiedzi. W trybie AI vs AI można ustawić osobną głębokość przeszukiwania dla AI 1 i AI 2.

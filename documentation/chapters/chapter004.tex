@@ -1,0 +1,267 @@
+\chapter{Algorytmy sztucznej inteligencji i strategie decyzyjne}
+
+Rozdział opisuje mechanizmy decyzyjne wykorzystane w obu grach. W Reversi zastosowano algorytm Minimax z przycinaniem Alpha-Beta oraz heurystyczną ocenę planszy. W grze Nim wykorzystano strategię optymalną opartą na operacji XOR i wartości Nim-sum.
+
+Omówiono zarówno podstawy teoretyczne algorytmów, jak i sposób ich zastosowania w projekcie. Uwzględniono również tryby AI vs AI, które pozwalają obserwować działanie agentów bez udziału gracza.
+
+\section{Agent decyzyjny gry Reversi}
+
+% ==============================================
+% Charakterystyka problemu decyzyjnego w Reversi
+% ==============================================
+\subsection{Charakterystyka problemu decyzyjnego w Reversi}
+
+Reversi jest deterministyczną grą dwuosobową o pełnej informacji. Oznacza to, że obaj gracze znają aktualny stan planszy, rozmieszczenie pionków oraz dostępne ruchy. W projekcie wykorzystano klasyczną planszę $8 \times 8$.
+
+Z punktu widzenia AI stan gry obejmuje układ pionków oraz informację, który gracz wykonuje ruch. Agent musi wybrać jeden z legalnych ruchów, ale nie może kierować się wyłącznie chwilową liczbą zdobytych pionków. W Reversi pozornie korzystny ruch może w kolejnych turach prowadzić do utraty ważnych pól, np. rogów planszy.
+
+Z tego powodu zastosowano algorytm Minimax, który analizuje możliwe odpowiedzi przeciwnika. Pełne przeszukanie drzewa gry jest zbyt kosztowne, dlatego agent analizuje stany tylko do określonej głębokości, a następnie ocenia planszę za pomocą funkcji heurystycznej.
+
+% ==========================================
+% Algorytm Minimax z przycinaniem Alpha-Beta
+% ==========================================
+\subsection{Algorytm Minimax z przycinaniem Alpha-Beta}
+
+Podstawowym algorytmem decyzyjnym w grze Reversi jest Minimax. Algorytm zakłada, że jedna strona maksymalizuje wynik, a przeciwnik wybiera ruchy minimalizujące ten wynik. W projekcie graczem maksymalizującym jest zawsze agent, dla którego aktualnie liczona jest decyzja.
+
+Drzewo gry nie jest analizowane do końca rozgrywki, ponieważ liczba możliwych kontynuacji szybko rośnie. Po osiągnięciu zadanej głębokości algorytm korzysta z funkcji heurystycznej, która szacuje jakość aktualnej planszy.
+
+W celu ograniczenia liczby analizowanych stanów zastosowano przycinanie Alpha-Beta. Mechanizm wykorzystuje dwie wartości:
+\begin{itemize}
+\item $\alpha$ -- najlepszy dotychczas znaleziony wynik gracza maksymalizującego,
+\item $\beta$ -- najlepszy dotychczas znaleziony wynik gracza minimalizującego.
+\end{itemize}
+
+Jeżeli spełniony zostanie warunek:
+\begin{equation*}
+\beta \leq \alpha,
+\end{equation*}
+dalsze analizowanie danej gałęzi zostaje przerwane. Alpha-Beta nie zmienia wyniku Minimaxu, ale pozwala pominąć obliczenia, które nie wpłynęłyby na końcową decyzję.
+
+Agent zapisuje również statystyki działania algorytmu: liczbę ocenionych stanów, liczbę odcięć Alpha-Beta oraz czas potrzebny na wybór ruchu. Dane te są prezentowane w panelu analizy AI i historii ruchów.
+
+\newpage
+
+\lstinputlisting[
+language=Python,
+caption={Najważniejszy fragment metody minimax() z przycinaniem Alpha-Beta.},
+label={lst:minimax-alphabeta},
+breaklines=true,
+columns=fullflexible,
+basicstyle=\ttfamily\footnotesize
+]{src/reversi_minimax_core.py}
+
+\textbf{Listing~\ref{lst:minimax-alphabeta}} przedstawia rdzeń metody \texttt{minimax()}, czyli fazę maksymalizacji, fazę minimalizacji oraz warunek odcięcia Alpha-Beta. Pominięto fragmenty techniczne, takie jak przygotowanie listy ruchów, obsługa braku ruchu oraz warunek stopu.
+
+W fazie MAX algorytm wybiera najwyższą wartość oceny i aktualizuje $\alpha$. W fazie MIN wybierana jest najniższa wartość i aktualizowane jest $\beta$. Gdy zachodzi warunek $\beta \leq \alpha$, dalsza analiza gałęzi zostaje przerwana, a licznik odcięć zostaje zwiększony.
+
+Przed wejściem do przedstawionego fragmentu metoda sprawdza, czy osiągnięto maksymalną głębokość albo stan końcowy. Jeśli tak, plansza jest oceniana przez metodę \texttt{evaluate\_terminal\_or\_heuristic()}.
+
+\lstinputlisting[
+language=Python,
+caption={Fragment wyboru najlepszego ruchu przez agenta Reversi.},
+label={lst:choose-best-move},
+breaklines=true,
+columns=fullflexible,
+basicstyle=\ttfamily\footnotesize
+]{src/reversi_choose_best_move.py}
+
+\textbf{Listing~\ref{lst:choose-best-move}} pokazuje uproszczony wybór najlepszego ruchu. Każdy legalny ruch jest symulowany na tymczasowej planszy, a następnie oceniany przez \texttt{minimax()}. Ruch z najwyższą oceną zostaje zapamiętany jako decyzja agenta.
+
+W pełnej implementacji metoda \texttt{choose\_best\_move()} dodatkowo mierzy czas analizy, resetuje statystyki, obsługuje brak legalnych ruchów i zwraca wynik w strukturze \texttt{MinimaxResult}.
+
+W trybie Człowiek vs AI głębokość przeszukiwania zależy od wybranego poziomu trudności. W trybie AI vs AI każdy agent może mieć osobną głębokość. AI 1 gra czarnymi pionkami, a AI 2 białymi.
+
+\lstinputlisting[
+language=Python,
+caption={Wywołanie agenta AI w trybie AI vs AI.},
+label={lst:reversi-ai-call},
+breaklines=true,
+columns=fullflexible,
+basicstyle=\ttfamily\footnotesize
+]{src/reversi_ai_call.py}
+
+\textbf{Listing~\ref{lst:reversi-ai-call}} pokazuje użycie agenta w trybie AI vs AI. Aktualny gracz jest jednocześnie graczem, dla którego liczona jest najlepsza decyzja. Dzięki temu ta sama klasa AI obsługuje obu agentów.
+
+% ==================================
+% Funkcja heurystyczna oceny planszy
+% ==================================
+\subsection{Funkcja heurystyczna oceny planszy}
+
+Minimax w Reversi nie przeszukuje całego drzewa gry do końca rozgrywki. Po osiągnięciu ustalonej głębokości wykorzystywana jest funkcja heurystyczna, która przypisuje planszy wartość liczbową określającą, czy dany stan jest korzystny dla agenta.
+
+Ocena planszy opiera się na kilku elementach strategicznych. Najważniejsze są rogi, ponieważ pionków w rogach nie można odwrócić. Uwzględniana jest także mobilność, czyli liczba legalnych ruchów gracza i przeciwnika.
+
+Funkcja bierze również pod uwagę wartość pozycyjną pól, różnicę pionków oraz karę za zajmowanie pól ryzykownych przy pustych rogach. Dzięki temu agent nie ocenia pozycji wyłącznie na podstawie chwilowej liczby pionków.
+
+Ogólną postać funkcji heurystycznej można przedstawić jako sumę ważoną:
+\begin{equation*}
+H(s) =
+w_c \cdot C(s)
++ w_m \cdot M(s)
++ w_p \cdot P(s)
++ w_d \cdot D(s)
+- w_r \cdot R(s),
+\end{equation*}
+gdzie:
+\begin{itemize}
+\item $C(s)$ oznacza ocenę zajętych rogów,
+\item $M(s)$ oznacza ocenę mobilności,
+\item $P(s)$ oznacza ocenę pozycyjną pól planszy,
+\item $D(s)$ oznacza różnicę liczby pionków,
+\item $R(s)$ oznacza karę za pola ryzykowne,
+\item $w_c, w_m, w_p, w_d, w_r$ oznaczają wagi składników.
+\end{itemize}
+
+\lstinputlisting[
+language=Python,
+caption={Fragment funkcji heurystycznej oceny planszy Reversi.},
+label={lst:reversi-evaluate-board},
+breaklines=true,
+columns=fullflexible,
+basicstyle=\ttfamily\footnotesize
+]{src/reversi_evaluate_board.py}
+
+\textbf{Listing~\ref{lst:reversi-evaluate-board}} przedstawia sposób obliczania oceny heurystycznej. Metoda \texttt{evaluate\_board()} pobiera wartości cząstkowe i łączy je w jeden wynik liczbowy. Wynik dodatni oznacza pozycję korzystną dla agenta, a ujemny przewagę przeciwnika.
+
+Największy wpływ na ocenę mają rogi planszy i mobilność. Uwzględniana jest także macierz wag pól, różnica pionków oraz kara za pola ryzykowne przy pustych rogach. Ocena heurystyczna jest oddzielona od Minimaxu, dzięki czemu można łatwo zmieniać wagi lub dodawać nowe składniki.
+
+\newpage
+
+% ========================================
+% Implementacja agenta Reversi w projekcie
+% ========================================
+\subsection{Implementacja agenta Reversi w projekcie}
+
+Agent Reversi został zaimplementowany w klasie \texttt{ReversiAI}. Korzysta ona z silnika zasad gry \texttt{ReversiEngine} oraz modułu oceny heurystycznej \texttt{ReversiEvaluator}. Dzięki temu wybór ruchu jest oddzielony od logiki zasad gry i interfejsu graficznego.
+
+Głównym punktem wejścia jest metoda \texttt{choose\_best\_move()}. Otrzymuje ona aktualną planszę, gracza wykonującego ruch, gracza analizowanego przez AI oraz głębokość przeszukiwania. Następnie sprawdza legalne ruchy, symuluje je i wybiera najlepszy wynik zwrócony przez \texttt{minimax()}.
+
+Wynik decyzji zapisywany jest w strukturze \texttt{MinimaxResult}. Zawiera ona wybrany ruch, ocenę punktową oraz statystyki, takie jak liczba ocenionych stanów, liczba odcięć Alpha-Beta i czas analizy.
+
+W implementacji zastosowano także metodę \texttt{order\_moves()}, która analizuje ruchy prowadzące do zajęcia rogów jako pierwsze. Poprawia to skuteczność przycinania Alpha-Beta. Agent obsługuje również sytuację braku legalnego ruchu, przekazując wtedy turę przeciwnikowi.
+
+Ta sama klasa \texttt{ReversiAI} jest używana w trybie Człowiek vs AI oraz AI vs AI. Różnią się jedynie parametry przekazywane do metody \texttt{choose\_best\_move()}.
+
+\subsection{Tryb AI vs AI i wpływ głębokości przeszukiwania}
+
+W trybie AI vs AI obie strony są sterowane przez klasę \texttt{ReversiAI}. AI 1 gra czarnymi pionkami, a AI 2 białymi. Pozwala to obserwować rozgrywkę bez udziału gracza i porównywać decyzje agentów.
+
+Każdy agent może mieć osobną głębokość przeszukiwania. Większa głębokość pozwala analizować dalsze konsekwencje ruchu, ale zwiększa liczbę sprawdzanych stanów i czas obliczeń.
+
+Podczas ruchu aktualny gracz jest przekazywany do algorytmu jako gracz maksymalizujący. Dzięki temu AI 1 ocenia planszę z perspektywy czarnych pionków, a AI 2 z perspektywy białych.
+
+Tryb AI vs AI pełni funkcję demonstracyjną. Pokazuje działanie Minimaxu z Alpha-Beta, wpływ głębokości przeszukiwania oraz statystyki decyzji, takie jak liczba ocenionych stanów, liczba odcięć i czas analizy.
+
+
+
+\section{Strategia optymalna w grze Nim}
+
+
+% ===============================================
+% Charakterystyka gry Nim jako problemu decyzyjnego
+% ===============================================
+\subsection{Charakterystyka gry Nim jako problemu decyzyjnego}
+
+Nim jest deterministyczną grą dwuosobową o pełnej informacji. Stan gry jest opisany przez listę stert, z których każda zawiera określoną liczbę żetonów. W pojedynczym ruchu gracz wybiera jedną stertę i zabiera z niej co najmniej jeden żeton. W zastosowanym wariancie wygrywa gracz, który zabierze ostatni żeton.
+
+W przeciwieństwie do Reversi, gra Nim nie wymaga przeszukiwania drzewa gry za pomocą algorytmu Minimax. Dla tej gry istnieje strategia optymalna oparta na operacji bitowej XOR. Dzięki temu agent może bezpośrednio obliczyć, czy aktualny stan jest wygrywający, oraz wskazać ruch prowadzący do pozycji niekorzystnej dla przeciwnika.
+
+Problem decyzyjny w Nim polega więc na analizie wartości stert i wyznaczeniu takiego ruchu, który po wykonaniu pozostawi przeciwnikowi pozycję przegrywającą przy optymalnej grze.
+
+\newpage
+
+% ==============================
+% Nim-sum jako podstawa decyzji
+% ==============================
+\subsection{Nim-sum jako podstawa decyzji}
+
+Podstawą strategii agenta w grze Nim jest wartość Nim-sum. Jest ona obliczana jako wynik operacji XOR wykonanej na liczbach żetonów we wszystkich stertach. W projekcie wartość ta pełni rolę sumy kontrolnej aktualnej pozycji.
+
+Ogólny zapis Nim-sum można przedstawić następująco:
+\begin{equation*}
+S = a_1 \oplus a_2 \oplus \ldots \oplus a_n,
+\end{equation*}
+gdzie $a_1, a_2, \ldots, a_n$ oznaczają liczby żetonów w kolejnych stertach, natomiast symbol $\oplus$ oznacza operację XOR.
+
+Jeżeli wartość Nim-sum wynosi zero, aktualna pozycja jest przegrywająca przy optymalnej grze przeciwnika. Oznacza to, że gracz wykonujący ruch nie ma strategii gwarantującej zwycięstwo. Jeżeli Nim-sum jest różny od zera, pozycja jest wygrywająca i istnieje ruch, który sprowadza Nim-sum do wartości zero.
+
+\lstinputlisting[
+language=Python,
+caption={Obliczanie wartości Nim-sum dla aktualnych stert.},
+label={lst:nim-calculate-nim-sum},
+breaklines=true,
+columns=fullflexible,
+basicstyle=\ttfamily\footnotesize
+]{src/nim_calculate_nim_sum.py}
+
+\textbf{Listing~\ref{lst:nim-calculate-nim-sum}} przedstawia sposób obliczania wartości Nim-sum w projekcie. Algorytm przechodzi przez kolejne sterty i wykonuje operację XOR na ich wartościach. Otrzymany wynik określa typ pozycji: wygrywającą albo przegrywającą.
+
+% ==============================
+% Wyznaczanie ruchu optymalnego
+% ==============================
+\subsection{Wyznaczanie ruchu optymalnego}
+
+Jeżeli Nim-sum jest różny od zera, agent szuka sterty, którą można zmniejszyć tak, aby po ruchu całkowity Nim-sum wynosił zero. W tym celu dla każdej sterty obliczana jest wartość docelowa:
+\begin{equation*}
+t_i = a_i \oplus S,
+\end{equation*}
+gdzie $a_i$ oznacza aktualną wartość sterty, a $S$ oznacza Nim-sum.
+
+Jeżeli wartość $t_i$ jest mniejsza od aktualnej liczby żetonów w stercie, możliwe jest wykonanie ruchu optymalnego. Agent zabiera wtedy:
+\begin{equation*}
+a_i - t_i
+\end{equation*}
+żetonów z wybranej sterty. Po takim ruchu przeciwnik otrzymuje pozycję o wartości Nim-sum równej zero.
+
+Jeżeli Nim-sum już na początku wynosi zero, agent nie posiada ruchu gwarantującego zwycięstwo. W takiej sytuacji wykonuje pierwszy dostępny poprawny ruch. W projekcie pełni to rolę ruchu awaryjnego.
+
+\newpage
+
+\lstinputlisting[
+language=Python,
+caption={Wyznaczanie optymalnego ruchu agenta Nim.},
+label={lst:nim-find-optimal-move},
+breaklines=true,
+columns=fullflexible,
+basicstyle=\ttfamily\footnotesize
+]{src/nim_find_optimal_move.py}
+
+\textbf{Listing~\ref{lst:nim-find-optimal-move}} pokazuje główną logikę wyboru ruchu. Agent najpierw oblicza Nim-sum. Jeżeli wynik wynosi zero, wybierany jest ruch awaryjny. W przeciwnym przypadku sprawdzane są kolejne sterty i wybierana jest taka, którą można zmniejszyć do wartości zapewniającej Nim-sum równy zero.
+
+% ====================================
+% Implementacja agenta Nim w projekcie
+% ====================================
+\subsection{Implementacja agenta Nim w projekcie}
+
+Agent gry Nim został zaimplementowany w klasie \texttt{NimAI}. Klasa korzysta z silnika \texttt{NimEngine}, który odpowiada za obliczanie Nim-sum, walidację ruchów oraz wykonywanie ruchów na aktualnym stanie gry.
+
+Główną metodą agenta jest \texttt{find\_optimal\_move()}. Metoda ta analizuje aktualne sterty i zwraca obiekt \texttt{Move}, zawierający indeks wybranej sterty oraz liczbę żetonów do zabrania. Jeżeli pozycja jest wygrywająca, agent wybiera ruch sprowadzający Nim-sum do zera. Jeżeli pozycja jest przegrywająca, wykonywany jest pierwszy poprawny ruch.
+
+W projekcie dodano również metodę \texttt{explain\_move()}, która przygotowuje tekstowe wyjaśnienie decyzji AI. Pokazuje ona stan przed ruchem, wartość Nim-sum, wybraną stertę, liczbę zabranych żetonów oraz stan po wykonaniu ruchu. Dzięki temu decyzja agenta jest czytelna dla użytkownika.
+
+Silnik gry obsługuje także zmianę aktualnego gracza. W trybie Człowiek vs AI tura przechodzi pomiędzy graczami \texttt{human} i \texttt{ai}, natomiast w trybie AI vs AI pomiędzy \texttt{ai\_1} i \texttt{ai\_2}.
+
+\lstinputlisting[
+language=Python,
+caption={Fragment obsługi zmiany gracza w silniku gry Nim.},
+label={lst:nim-apply-move},
+breaklines=true,
+columns=fullflexible,
+basicstyle=\ttfamily\footnotesize
+]{src/nim_apply_move_players.py}
+
+\textbf{Listing~\ref{lst:nim-apply-move}} przedstawia fragment logiki odpowiedzialnej za zmianę aktualnego gracza po wykonaniu ruchu. Dzięki temu ten sam silnik może obsługiwać zarówno tryb Człowiek vs AI, jak i AI vs AI.
+
+% =================================================
+% Tryb AI vs AI i deterministyczny przebieg rozgrywki
+% =================================================
+\subsection{Tryb AI vs AI i deterministyczny przebieg rozgrywki}
+
+W grze Nim zaimplementowano również tryb AI vs AI. W tym trybie obie strony korzystają z tej samej klasy \texttt{NimAI}, a ruchy wykonywane są automatycznie. Pierwszy agent oznaczony jest jako \texttt{ai\_1}, natomiast drugi jako \texttt{ai\_2}.
+
+Rozgrywka AI vs AI w Nim ma charakter deterministyczny. Oznacza to, że dla tego samego początkowego układu stert agenci wykonają zawsze te same ruchy. Wynika to z faktu, że strategia nie korzysta z losowości, a sterty są sprawdzane w stałej kolejności.
+
+Tryb AI vs AI pełni funkcję demonstracyjną. Pozwala pokazać działanie strategii opartej na Nim-sum oraz obserwować, w jaki sposób agent sprowadza przeciwnika do pozycji przegrywającej. W historii ruchów zapisywane są decyzje obu agentów, co ułatwia prześledzenie przebiegu partii.
+
+W porównaniu z Reversi, gra Nim jest znacznie prostsza obliczeniowo. Agent nie musi analizować wielu przyszłych wariantów, ponieważ ruch optymalny można wyznaczyć bezpośrednio na podstawie aktualnego stanu stert.

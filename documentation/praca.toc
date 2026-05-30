@@ -1,0 +1,59 @@
+\babel@toc {polish}{}\relax 
+\contentsline {chapter}{\numberline {1}Cel i zakres projektu}{7}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Cel projektu}{7}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Zakres projektu}{7}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Zrealizowane moduły}{7}{section.1.3}%
+\contentsline {chapter}{\numberline {2}Zasady gier i założenia projektowe}{8}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Zasady gry Reversi}{8}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Zasady gry Nim}{8}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Tryby rozgrywki}{8}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Założenia dotyczące agentów AI}{8}{section.2.4}%
+\contentsline {chapter}{\numberline {3}Struktura i architektura aplikacji}{9}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Ogólna struktura katalogów}{9}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Podział na warstwy aplikacji}{9}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Modele danych}{9}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Silniki reguł gry}{9}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Warstwa interfejsu graficznego}{9}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Algorytmy sztucznej inteligencji i strategie decyzyjne}{10}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Agent decyzyjny gry Reversi}{10}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Charakterystyka problemu decyzyjnego w Reversi}{10}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Algorytm Minimax z przycinaniem Alpha-Beta}{10}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Funkcja heurystyczna oceny planszy}{13}{subsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.1.4}Implementacja agenta Reversi w projekcie}{14}{subsection.4.1.4}%
+\contentsline {subsection}{\numberline {4.1.5}Tryb AI vs AI i wpływ głębokości przeszukiwania}{14}{subsection.4.1.5}%
+\contentsline {section}{\numberline {4.2}Strategia optymalna w grze Nim}{14}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Charakterystyka gry Nim jako problemu decyzyjnego}{14}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Nim-sum jako podstawa decyzji}{15}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Wyznaczanie ruchu optymalnego}{15}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.4}Implementacja agenta Nim w projekcie}{16}{subsection.4.2.4}%
+\contentsline {subsection}{\numberline {4.2.5}Tryb AI vs AI i deterministyczny przebieg rozgrywki}{17}{subsection.4.2.5}%
+\contentsline {chapter}{\numberline {5}Implementacja interfejsu użytkownika}{18}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Interfejs gry Reversi}{18}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Interfejs gry Nim}{18}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Obsługa trybu Człowiek vs AI}{18}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Obsługa trybu AI vs AI}{18}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Prezentacja historii ruchów i analizy AI}{18}{section.5.5}%
+\contentsline {chapter}{\numberline {6}Przykładowe przebiegi rozgrywek}{19}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Przykład działania Reversi w trybie Człowiek vs AI}{19}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Przykład działania Reversi w trybie AI vs AI}{19}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Przykład działania Nim w trybie Człowiek vs AI}{19}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Przykład działania Nim w trybie AI vs AI}{19}{section.6.4}%
+\contentsline {section}{\numberline {6.5}Analiza wybranych decyzji agentów}{19}{section.6.5}%
+\contentsline {chapter}{\numberline {7}Napotkane wyzwania i sposoby ich rozwiązania}{20}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Separacja logiki gry od interfejsu}{20}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Problem wydajności w grze Reversi}{20}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Dobór funkcji heurystycznej}{20}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Obsługa trybu AI vs AI}{20}{section.7.4}%
+\contentsline {section}{\numberline {7.5}Problemy z interfejsem i prezentacją stanu gry}{20}{section.7.5}%
+\contentsline {chapter}{\numberline {8}Instrukcja uruchomienia projektu}{21}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Wymagania środowiskowe}{21}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Struktura projektu}{21}{section.8.2}%
+\contentsline {section}{\numberline {8.3}Uruchomienie gry Nim}{22}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Uruchomienie gry Reversi}{22}{section.8.4}%
+\contentsline {chapter}{\numberline {9}Podsumowanie i wnioski}{23}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Zrealizowane funkcjonalności}{23}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Ocena działania agentów AI}{23}{section.9.2}%
+\contentsline {section}{\numberline {9.3}Możliwe kierunki rozwoju}{23}{section.9.3}%
+\contentsline {section}{\textbf {Bibliografia}}{24}{section.9.3}%
+\contentsline {section}{\textbf {Spis rysunków}}{25}{chapter*.1}%
+\contentsline {section}{\textbf {Oświadczenie studenta o samodzielności pracy}}{26}{chapter*.2}%
