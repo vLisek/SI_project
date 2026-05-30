@@ -25,7 +25,7 @@ class GameState:
     Klasa reprezentująca pełny stan jednej rozgrywki.
 
     piles - lista stert, gdzie każda liczba oznacza liczbę żetonów w danej stercie
-    current_player - aktualny gracz: "human" albo "ai"
+    current_player - aktualny gracz: "human", "ai", "ai_1" albo "ai_2"
     game_over - informacja czy gra została zakończona
     winner - zwycięzca gry albo None, jeśli gra jeszcze trwa
     """

@@ -1,4 +1,4 @@
-from gui.app import ReversiApp
+from reversi_project.gui.app import ReversiApp
 
 """
 PLIK: main.py

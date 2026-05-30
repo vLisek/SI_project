@@ -25,7 +25,7 @@ class GameState:
     Klasa reprezentująca pełny stan jednej rozgrywki.
 
     board - aktualna plansza gry zapisana jako lista list
-    current_player - aktualny gracz wykonujący ruch
+    current_player - aktualny gracz: "human", "ai", "ai_1" albo "ai_2"
     game_over - informacja czy gra została zakończona
     winner - zwycięzca gry albo None, jeśli gra jeszcze trwa lub zakończyła się remisem
     """

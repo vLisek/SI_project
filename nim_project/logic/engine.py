@@ -18,6 +18,7 @@ MECHANIZMY:
 3. Walidacja ruchu gracza lub AI
 4. Wykonanie ruchu na kopii aktualnego stanu
 5. Ustalenie następnego gracza i zwycięzcy
+6. Obsługa dwóch trybów rozgrywki: Człowiek vs AI oraz AI vs AI
 """
 
 
@@ -99,12 +100,19 @@ class NimEngine:
 
         next_player = game_state.current_player
 
-        # Jeśli gra się nie skończyła, tura przechodzi na drugiego gracza
+        # Jeśli gra się nie skończyła, tura przechodzi na drugiego gracza.
+        # Silnik obsługuje dwa tryby:
+        # human <-> ai dla gry człowieka z komputerem
+        # ai_1 <-> ai_2 dla automatycznej symulacji AI vs AI
         if not game_over:
             if game_state.current_player == "human":
                 next_player = "ai"
-            else:
+            elif game_state.current_player == "ai":
                 next_player = "human"
+            elif game_state.current_player == "ai_1":
+                next_player = "ai_2"
+            elif game_state.current_player == "ai_2":
+                next_player = "ai_1"
 
         return GameState(
             piles=new_piles,

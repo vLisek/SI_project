@@ -1,4 +1,4 @@
-from gui.app import NimApp
+from nim_project.gui.app import NimApp
 
 """
 PLIK: main.py
